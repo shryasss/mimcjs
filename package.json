@@ -1,25 +1,26 @@
 {
-  "name": "mimcjs",
-  "version": "1.0.2",
-  "description": "An implementation of MiMC hash in Javascript, based on https://github.com/HarryR/ethsnarks/blob/master/ethsnarks/mimc/permutation.py",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "mimc",
-    "hash"
-  ],
-  "author": "guidocazzaniga",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/guidocazzaniga/mimcjs.git"
-  },
-  "bin": {
-    "mimc": "./cli.js"
-  },
-  "dependencies": {
-    "keccak256": "1.0.6"
-  }
+    "name": "mimcjs-solidity",
+    "version": "1.0.2",
+    "description": "An implementation of MiMC hash in Javascript, based on https://github.com/HarryR/ethsnarks/blob/master/ethsnarks/mimc/permutation.py",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "mimc",
+        "hash"
+    ],
+    "author": "guidocazzaniga",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/guidocazzaniga/mimcjs.git"
+    },
+    "bin": {
+        "mimc": "./cli.js"
+    },
+    "dependencies": {
+        "ethers": "^5.6.8",
+        "keccak256": "1.0.6"
+    }
 }

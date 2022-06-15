@@ -1,20 +1,20 @@
-const keccak256 = require('keccak256')
-const fs = require('fs')
-const path = require('path')
+const keccak256 = require("keccak256");
+const fs = require("fs");
+const path = require("path");
 
 // Read default parameters from config file
 let rawdata = fs.readFileSync(path.resolve(__dirname, "config.json"));
 const config = JSON.parse(rawdata);
-const DEFAULT_ROUNDS = config['DEFAULT_ROUNDS']
-const P = BigInt(config['SNARK_SCALAR_FIELD'])
+const DEFAULT_ROUNDS = config["DEFAULT_ROUNDS"];
+const P = BigInt(config["SNARK_SCALAR_FIELD"]);
 
 /**
  * Get BigInt from the digest resulting from keccak256
  * @param {*} s the digest
  * @returns a BigInt
  */
-function H(s){
-    return BigInt('0x'+s.toString('hex')) 
+function H(s) {
+    return BigInt("0x" + s.toString("hex"));
 }
 
 /**
@@ -22,39 +22,35 @@ function H(s){
  * @param {*} seed seed used for the generation
  * @returns round constants
  */
-function generateRoundConstants(seed){
-    if(typeof(seed) == "string"){
-        seed = Buffer.from(seed,'ascii')
-    } else if (!Number.isInteger(seed)){
-        throw "Invalid seed type"
+function generateRoundConstants(seed) {
+    if (typeof seed == "string") {
+        seed = Buffer.from(seed, "ascii");
+    } else if (!Number.isInteger(seed)) {
+        throw "Invalid seed type";
     }
-    constants = []
-    for(var i=0; i<DEFAULT_ROUNDS; i++){
-        seed = keccak256(seed)
-        constants.push(H(seed) % P)
+    constants = [];
+    for (var i = 0; i < DEFAULT_ROUNDS; i++) {
+        seed = keccak256(seed);
+        constants.push(H(seed) % P);
     }
-    return writeToFile(constants)
+    return writeToFile(constants);
 }
 
 /**
  * Write round constants to file
  * @param {*} constants round constants
  */
-function writeToFile(constants){
+function writeToFile(constants) {
     let rawdata = fs.readFileSync(path.resolve(__dirname, "config.json"));
     const config = JSON.parse(rawdata);
-    constants.forEach((element,i) => {
-        constants[i]= element.toString()+"n"
+    constants.forEach((element, i) => {
+        constants[i] = element.toString() + "n";
     });
-    config['ROUND_CONSTANTS'] = constants
+    config["ROUND_CONSTANTS"] = constants;
     let data = JSON.stringify(config);
     fs.writeFileSync(path.resolve(__dirname, "config.json"), data);
 }
 
-module.exports = {generateRoundConstants}
+module.exports = { generateRoundConstants };
 
-
-
-
-
-
+generateRoundConstants("mimc");
