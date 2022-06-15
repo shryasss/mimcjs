@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { BigNumber } = require("ethers");
 
 // Read default parameters
 
@@ -87,7 +86,7 @@ function mimcCipher(input, roundConstants, k) {
  * @returns the hash
  */
 function mimcHash(input, roundConstants, k) {
-    k = BigInt(k); // TODO - Change back to zero
+    // k = BigInt(k); // TODO - Change back to zero
     for (var i = 0; i < 2; i++) {
         input[i] = input[i] % P;
         k = mimcCipher(input[i], roundConstants, k);
@@ -106,15 +105,15 @@ function mimc(preimage, k) {
     }
     let inputs = [];
     for (var i = 0; i < preimage.length; i++) {
-        inputs.push(BigInt(preimage[i]));
+        inputs.push(preimage[i]);
     }
     return mimcHash(inputs, ROUND_CONSTANTS, k);
 }
 
-function mimcHashPair(left, right, IV) {
-    let preimage = [left, right];
-    IV = BigNumber.from(IVs[IV]);
-    return mimc(preimage, IV);
+function mimcHashPair(left, right, k) {
+    let preimage = [BigInt(left), BigInt(right)];
+    k = BigInt(IVs[k]);
+    return mimc(preimage, k);
 }
 
 module.exports = { mimc, mimcHash, mimcHashPair };

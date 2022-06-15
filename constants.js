@@ -29,6 +29,7 @@ function generateRoundConstants(seed) {
         throw "Invalid seed type";
     }
     constants = [];
+    seed = keccak256(seed);
     for (var i = 0; i < DEFAULT_ROUNDS; i++) {
         seed = keccak256(seed);
         constants.push(H(seed) % P);
