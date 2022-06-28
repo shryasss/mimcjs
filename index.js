@@ -124,9 +124,10 @@ function mimcHashStr(str) {
     }
     let preimage = [];
     for (var i = 0; i < str.length; i += 32) {
-        preimage.push(BigInt(`0x${hexStr.substr(i, 32)}`));
+        preimage.push(BigInt(`0x${hexStr.substring(i, i + 32)}`));
     }
-    mimc(preimage, 0);
+    console.log(preimage);
+    mimc(preimage, IVs[0]);
 }
 
 module.exports = { mimc, mimcHash, mimcHashPair, mimcHashStr };
