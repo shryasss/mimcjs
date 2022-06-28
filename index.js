@@ -104,9 +104,12 @@ function mimc(preimage, k) {
     if (!Array.isArray(preimage)) {
         throw "Expected preimage should be array of bigInts";
     }
+    if (typeof k == "undefined") {
+        k = BigInt(0);
+    }
     let inputs = [];
     for (var i = 0; i < preimage.length; i++) {
-        inputs.push(preimage[i]);
+        inputs.push(BigInt(preimage[i]));
     }
     return mimcHash(inputs, ROUND_CONSTANTS, k);
 }
