@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { ethers } = require("ethers");
 const path = require("path");
 
 // Read default parameters
@@ -87,7 +88,7 @@ function mimcCipher(input, roundConstants, k) {
  */
 function mimcHash(input, roundConstants, k) {
     // k = BigInt(k); // TODO - Change back to zero
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < input.length; i++) {
         input[i] = input[i] % P;
         k = mimcCipher(input[i], roundConstants, k);
     }
@@ -100,8 +101,8 @@ function mimcHash(input, roundConstants, k) {
  * @returns the hash
  */
 function mimc(preimage, k) {
-    if (!Array.isArray(preimage) || !(preimage.length == 2)) {
-        throw "Expected preimage is a point";
+    if (!Array.isArray(preimage)) {
+        throw "Expected preimage should be array of bigInts";
     }
     let inputs = [];
     for (var i = 0; i < preimage.length; i++) {
@@ -116,4 +117,16 @@ function mimcHashPair(left, right, k) {
     return mimc(preimage, k);
 }
 
-module.exports = { mimc, mimcHash, mimcHashPair };
+function mimcHashStr(str) {
+    let hexStr = "";
+    for (var i = 0; i < str.length; i++) {
+        hexStr += str.charCodeAt(i).toString(16);
+    }
+    let preimage = [];
+    for (var i = 0; i < str.length; i += 32) {
+        preimage.push(BigInt(`0x${hexStr.substr(i, 32)}`));
+    }
+    mimc(preimage, 0);
+}
+
+module.exports = { mimc, mimcHash, mimcHashPair, mimcHashStr };

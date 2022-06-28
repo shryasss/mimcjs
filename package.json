@@ -20,7 +20,7 @@
         "mimc": "./cli.js"
     },
     "dependencies": {
-        "ethers": "^5.6.8",
+        "ethers": "^5.6.9",
         "keccak256": "1.0.6"
     }
 }
