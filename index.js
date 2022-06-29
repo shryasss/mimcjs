@@ -87,7 +87,6 @@ function mimcCipher(input, roundConstants, k) {
  * @returns the hash
  */
 function mimcHash(input, roundConstants, k) {
-    // k = BigInt(k); // TODO - Change back to zero
     for (var i = 0; i < input.length; i++) {
         input[i] = input[i] % P;
         k = mimcCipher(input[i], roundConstants, k);
@@ -120,17 +119,18 @@ function mimcHashPair(left, right, k) {
     return mimc(preimage, k);
 }
 
-function mimcHashStr(str) {
-    let hexStr = "";
-    for (var i = 0; i < str.length; i++) {
-        hexStr += str.charCodeAt(i).toString(16);
+function mimcHashAny(inputs) {
+    if (!Array.isArray(inputs)) {
+        throw "Expected inputs should be array of hex strings"; 
+    }
+    if (typeof k == "undefined") {
+        k = BigInt(0);
     }
     let preimage = [];
-    for (var i = 0; i < str.length; i += 32) {
-        preimage.push(BigInt(`0x${hexStr.substring(i, i + 32)}`));
+    for (var i = 0; i < inputs.length; i++) {
+        preimage.push(BigInt(inputs[i]));
     }
-    console.log(preimage);
-    mimc(preimage, IVs[0]);
+    return mimcHash(preimage, ROUND_CONSTANTS, k);
 }
 
-module.exports = { mimc, mimcHash, mimcHashPair, mimcHashStr };
+module.exports = { mimc, mimcHash, mimcHashPair, mimcHashAny };
