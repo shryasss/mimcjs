@@ -62,25 +62,6 @@ function mimcHash(input, roundConstants, k) {
     return k;
 }
 
-/**
- * Convert inputs and perform mimc hash
- * @param {*} preimage a point
- * @returns the hash
- */
-function mimc(preimage, k) {
-    if (!Array.isArray(preimage)) {
-        throw "Expected preimage should be array of bigInts";
-    }
-    if (typeof k == "undefined") {
-        k = BigInt(0);
-    }
-    let inputs = [];
-    for (var i = 0; i < preimage.length; i++) {
-        inputs.push(BigInt(preimage[i]));
-    }
-    return mimcHash(inputs, ROUND_CONSTANTS, k);
-}
-
 function mimcHashAny(inputs) {
     if (!Array.isArray(inputs)) {
         throw "Expected inputs should be array"; 
@@ -95,4 +76,4 @@ function mimcHashAny(inputs) {
     return mimcHash(preimage, ROUND_CONSTANTS, k);
 }
 
-module.exports = { mimc, mimcHash, mimcHashPair, mimcHashAny };
+module.exports = { mimcHashAny };
